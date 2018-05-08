@@ -313,10 +313,14 @@ type LsObject struct {
 }
 
 // Pin the given path
-func (s *Shell) Pin(path string) error {
+func (s *Shell) Pin(path string, recursive bool) error {
 	req := NewRequest(context.Background(), s.url, "pin/add", path)
-	req.Opts["r"] = "true"
 
+    if recursive {
+        req.Opts["r"] = "true"
+    } else {
+        req.Opts["r"] = "false"
+    }
 	resp, err := req.Send(s.httpcli)
 	if err != nil {
 		return err
